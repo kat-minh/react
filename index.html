@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Counter App - Vanilla JS</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f3f4f6; /* bg-gray-100 */
+        margin: 0;
+      }
+      .container {
+        background: white;
+        padding: 2rem;
+        border-radius: 0.75rem; /* rounded-xl */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+        text-align: center;
+        width: 20rem; /* w-80 */
+        border: 1px solid #e5e7eb; /* border-gray-200 */
+      }
+      h1 {
+        font-size: 1.5rem; /* text-2xl */
+        font-weight: 700; /* font-bold */
+        margin-bottom: 1.5rem; /* mb-6 */
+        color: #1f2937; /* text-gray-800 */
+      }
+      button {
+        background-color: #2563eb; /* bg-blue-600 */
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem; /* py-3 px-6 */
+        font-size: 1.125rem; /* text-lg */
+        font-weight: 700; /* font-bold */
+        border-radius: 0.5rem; /* rounded-lg */
+        cursor: pointer;
+        transition: background-color 0.2s;
+        width: 100%;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+      }
+      button:hover {
+        background-color: #1d4ed8; /* hover:bg-blue-700 */
+      }
+      button:active {
+        transform: scale(0.95); /* active:scale-95 */
+      }
+      p {
+        margin-top: 0.5rem;
+        color: #4b5563; /* text-gray-600 */
+      }
+      #status {
+        margin-top: 1rem;
+        font-weight: 700; /* font-bold */
+        font-size: 1.125rem; /* text-lg */
+      }
+      #message {
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Vanilla JS</h1>
+
+      <!-- UI elements -->
+      <button id="btn">Count: 0</button>
+      <p id="status">Normal</p>
+      <p id="message">Click the button!</p>
+    </div>
+
+    <script>
+      // State (data) - chỉ có 1 biến
+      let count = 0;
+
+      document.getElementById("btn").addEventListener("click", () => {
+        // Cập nhật state
+        count++;
+
+        // ❌ VẤN ĐỀ: Phải update UI THỦ CÔNG ở 3 chỗ!
+
+        // Chỗ 1: Cập nhật button text
+        document.getElementById("btn").innerText = `Count: ${count}`;
+
+        // Chỗ 2: Cập nhật status
+        if (count > 5) {
+          document.getElementById("status").innerText = "Too many!";
+          document.getElementById("status").style.color = "red";
+        } else if (count > 3) {
+          document.getElementById("status").innerText = "Getting high...";
+          document.getElementById("status").style.color = "orange";
+        } else {
+          document.getElementById("status").innerText = "Normal";
+          document.getElementById("status").style.color = "green";
+        }
+
+        // Chỗ 3: Cập nhật message
+        if (count === 1) {
+          document.getElementById("message").innerText = "Good start!";
+        } else if (count === 10) {
+          document.getElementById("message").innerText = "You reached 10!";
+        }
+      });
+    </script>
+  </body>
+</html>
