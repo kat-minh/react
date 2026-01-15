@@ -1,4 +1,4 @@
-# 💻 FULL CODE REFERENCE: SESSION 03-04 – ROUTING & useEffect
+# 💻 FULL CODE REFERENCE: SESSION ROUTING
 
 ## 1. Cài đặt React Router v6
 ```bash
