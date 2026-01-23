@@ -137,27 +137,6 @@ export const usersApi = {
       refreshToken: data.data.refresh_token,
     };
   },
-
-  // ✅ Get Me: Normalize result.user → user
-  async getMe(): Promise<User> {
-    const { data } = await apiClient.post("/users/me");
-
-    // Backend trả: { message, result: { user: {...} } }
-    // Frontend nhận: User object trực tiếp
-    return data.result.user;
-  },
-
-  // ✅ Refresh Token: Normalize
-  async refreshToken(refreshToken: string): Promise<AuthTokens> {
-    const { data } = await apiClient.post("/users/refresh-token", {
-      refresh_token: refreshToken, // Backend yêu cầu snake_case
-    });
-
-    return {
-      accessToken: data.result.access_token,
-      refreshToken: data.result.refresh_token,
-    };
-  },
 };
 ```
 
