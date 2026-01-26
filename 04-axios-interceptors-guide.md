@@ -382,10 +382,6 @@ apiClient.interceptors.response.use(
 
    - Tạo file `src/pages/RegisterPage.tsx`
    - Form gồm 3 field: Username, Email, Password
-   - Validation:
-     - Username: Bắt buộc, ít nhất 3 ký tự
-     - Email: Bắt buộc, đúng format email
-     - Password: Bắt buộc, ít nhất 6 ký tự
    - Khi submit:
      - Xử lí loading
      - Redirect về trang login khi thành công
