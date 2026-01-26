@@ -248,10 +248,11 @@ apiClient.interceptors.response.use(
         // 1. Gọi API xin token mới
         // ⚠️ Dùng axios thường để tránh dính interceptor của apiClient
         const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/users/refresh-token`,
+          `${import.meta.env.VITE_API_URL}auth/refresh`,
+          {}, // Empty body vì refresh token ở cookies
           {
-            refresh_token: refreshToken,
-          }
+            withCredentials: true, // Cho phép gửi cookies
+          },
         );
 
         const { access_token, refresh_token } = response.data.result;
