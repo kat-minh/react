@@ -3,6 +3,7 @@
 ## 🎯 Mục tiêu học tập
 
 Xây dựng một API Layer tập trung (centralized) với Axios interceptors để:
+
 - Tự động attach JWT token vào mọi request
 - Xử lý lỗi tập trung
 - Tự động refresh token khi hết hạn
@@ -13,10 +14,12 @@ Xây dựng một API Layer tập trung (centralized) với Axios interceptors �
 ### Interceptors (Trạm kiểm soát)
 
 **Request Interceptor:** Chặn request TRƯỚC khi bay ra khỏi App
+
 - Dùng để nhét Token vào Header
 - Modify request config
 
 **Response Interceptor:** Chặn response TRƯỚC khi về tới Component
+
 - Xử lý lỗi chung (401, 500)
 - Convert/normalize dữ liệu
 
@@ -62,6 +65,7 @@ export default apiClient;
 ⚠️ **QUAN TRỌNG: Backend Inconsistency**
 
 Backend thường không nhất quán trong response format:
+
 - Một số API trả `result`, một số trả `data`
 - Một số dùng `message`, một số dùng `msg`
 - Field naming: `snake_case` vs `camelCase`
@@ -162,6 +166,7 @@ export const usersApi = {
 ```
 
 **Lợi ích:**
+
 - Components chỉ cần biết interface Frontend (camelCase)
 - Mọi inconsistency được xử lý ở 1 chỗ duy nhất
 - Dễ maintain khi backend thay đổi
@@ -174,7 +179,7 @@ Cập nhật `src/lib/http/apiClient.ts`:
 
 ```ts
 import axios from "axios";
-import { useAuthStore } from '@/stores/auth.store';
+import { useAuthStore } from "@/stores/auth.store";
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -197,7 +202,7 @@ apiClient.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 export default apiClient;
@@ -224,7 +229,7 @@ apiClient.interceptors.response.use(
     // TODO: Handle 401 here
 
     return Promise.reject(error);
-  }
+  },
 );
 ```
 
@@ -248,10 +253,9 @@ apiClient.interceptors.response.use(
         // 1. Gọi API xin token mới
         // ⚠️ Dùng axios thường để tránh dính interceptor của apiClient
         const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}auth/refresh`,
-          {}, // Empty body vì refresh token ở cookies
+          `${import.meta.env.VITE_API_URL}/users/refresh-token`,
           {
-            withCredentials: true, // Cho phép gửi cookies
+            refresh_token: refreshToken,
           },
         );
 
@@ -274,11 +278,12 @@ apiClient.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 ```
 
 **Giải thích logic:**
+
 1. Bắt lỗi 401 (Unauthorized)
 2. Check flag `_retry` để tránh vòng lặp vô tận
 3. Gọi API refresh token (dùng axios gốc, không qua interceptor)
@@ -291,16 +296,19 @@ apiClient.interceptors.response.use(
 ## ⚠️ Common Mistakes
 
 ### 1. Circular Dependency
+
 **Bug:** Import `apiClient` vào `auth.store` rồi lại import `auth.store` vào `apiClient`
 
 **Fix:** Cấu trúc file cẩn thận. `apiClient` import store, store KHÔNG import lại client.
 
 ### 2. Infinite Loop 401
+
 **Bug:** API Refresh Token cũng bị 401 → Interceptor lại bắt → Lại gọi refresh → Vòng lặp
 
 **Fix:** Dùng `axios` gốc (không interceptor) để gọi API refresh token.
 
 ### 3. Quên `_retry` flag
+
 **Bug:** Vòng lặp vô tận nếu token mới vẫn sai
 
 **Fix:** Luôn check `!originalRequest._retry` trước khi refresh.
@@ -316,6 +324,7 @@ apiClient.interceptors.response.use(
 5. **Centralize normalization** - 1 chỗ duy nhất (service layer)
 
 ### Common Backend Inconsistencies:
+
 - Field names: `result` vs `data` vs `payload`
 - Message field: `message` vs `msg` vs `error`
 - Case convention: `snake_case` vs `camelCase`
@@ -331,7 +340,7 @@ apiClient.interceptors.response.use(
 1. Vào `LoginPage`, sửa nút Login để gọi `usersApi.getMe()`
 2. Set token giả trong `localStorage` thành chuỗi `abc` (token sai)
 3. Bấm nút → Quan sát Network Tab
-4. **Kỳ vọng:** 
+4. **Kỳ vọng:**
    - Request `/me` fail 401
    - Ngay lập tức thấy request `/refresh` chạy
    - Rồi lại thấy `/me` chạy lại
@@ -340,18 +349,56 @@ apiClient.interceptors.response.use(
 
 ## 🏠 Homework
 
-**Normalize Error:**
+**Xây dựng trang đăng ký tài khoản:**
 
-1. Backend trả về lỗi 422 có dạng:
-   ```json
-   { 
-     "errors": { 
-       "email": "Email invalid", 
-       "password": "Too short" 
-     } 
-   }
-   ```
+### Yêu cầu:
 
-2. Sửa Response Interceptor để khi gặp 422, biến đổi error object thành dạng dễ dùng cho React Hook Form
+1. **Call API Register:**
 
-3. Tạo hàm `handleApiError` để toast message lỗi ra màn hình (dùng Sonner)
+   - Endpoint: `POST /authentication/register`
+   - API Docs: https://thich-cung-kieng-server.onrender.com/docs#/Authentication/AuthController_register
+   - Request body:
+     ```json
+     {
+       "username": "string",
+       "password": "string",
+       "email": "string"
+     }
+     ```
+   - Response thành công (201):
+     ```json
+     log ra xem
+     ```
+
+2. **Tạo Service Layer:**
+
+   - Tạo file `src/lib/api/auth.api.ts`
+   - Tạo interface `RegisterDto` với các field: username, email, password (cái mình sẽ gửi đi)
+   - Tạo interface `RegisterResponse` để normalize dữ liệu từ backend (cái mình muốn nhận)
+   - Implement function `register()` trong service layer
+   - Nhớ normalize response
+
+3. **Tạo trang Register:**
+
+   - Tạo file `src/pages/RegisterPage.tsx`
+   - Form gồm 3 field: Username, Email, Password
+   - Validation:
+     - Username: Bắt buộc, ít nhất 3 ký tự
+     - Email: Bắt buộc, đúng format email
+     - Password: Bắt buộc, ít nhất 6 ký tự
+   - Khi submit:
+     - Xử lí loading
+     - Redirect về trang login khi thành công
+     - Nếu lỗi -> Hiển thị "Đăng ký thất bại, vui lòng thử lại"
+
+4. **Cập nhật Router:**
+
+   - Thêm route `/register` vào `router.tsx`
+   - Thêm link "Chưa có tài khoản? Đăng ký ngay" ở trang Login
+
+
+### Bonus (tùy chọn):
+
+- Thêm confirm password field (phải match với password)
+- Hiển thị password strength indicator
+- Disable nút submit khi đang loading
