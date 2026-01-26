@@ -384,6 +384,13 @@ apiClient.interceptors.response.use(
    - Form gồm 3 field: Username, Email, Password
    - Khi submit:
      - Xử lí loading
+       ```
+        {loading ? (
+             "Đang xử lý"
+            ) : (
+              "Đăng ký"
+            )}
+       ```
      - Redirect về trang login khi thành công
      - Nếu lỗi -> Hiển thị "Đăng ký thất bại, vui lòng thử lại"
 
