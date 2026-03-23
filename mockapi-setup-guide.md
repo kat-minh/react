@@ -19,13 +19,13 @@ Sau tài liệu này, bạn sẽ làm trước ở nhà để vô kiểm tra dù
 3. Bấm `Create new project`. (nút dấu + màu xành kế bên nút chữ Projects)
 4. Điền thông tin:
    - Project name: `hrm-lite-yourname`
-   - API Prefix: `/api/v1`
+   - API Prefix: `{yourname}`
 5. Bấm `Create`.
 
 Kết quả: bạn có Base URL dạng:
 
 ```txt
-https://<project-id>.mockapi.io/api/v1
+https://<project-id>.mockapi.io/yourname
 ```
 
 Ghi lại Base URL này, sẽ dùng trong code.
@@ -41,16 +41,14 @@ Ghi lại Base URL này, sẽ dùng trong code.
 5. Tạo 1 record duy nhất (id = 1) với dữ liệu:
 
 ```json
-[
-  {
-    "id": "1",
-    "email": "test@gmail.com",
-    "role": "admin",
-    "name": "Minh",
-    "accessToken": "fake-jwt-token-123456",
-    "message": "Login successfully"
-  }
-]
+[{
+  "id": "1",
+  "email": "test@gmail.com",
+  "role": "admin",
+  "name": "Minh",
+  "accessToken": "fake-jwt-token-123456",
+  "message": "Login successfully"
+}]
 ```
 
 5. Lưu lại và test endpoint:
@@ -62,7 +60,7 @@ GET /login/1
 URL đầy đủ:
 
 ```txt
-https://<project-id>.mockapi.io/api/v1/login/1
+https://<project-id>.mockapi.io/yourname/login/1
 ```
 
 Nếu trình duyệt trả JSON đúng như trên là đạt.
@@ -74,11 +72,11 @@ Nếu trình duyệt trả JSON đúng như trên là đạt.
 1. Bấm `New Resource`.
 2. Resource name: `employees`
 3. Tạo các field khuyên dùng:
+
    - `id` (Object ID)
    - `fullName` (string)
    - `department` (string)
    - `gender`(string)
-
 4. Seed 3-5 nhân viên mẫu.
 
 Ví dụ records:
@@ -133,7 +131,6 @@ Ví dụ records:
 ---
 
 ## 2. Setup code React (Feature-Based)
-
 ---
 
 ## Bước 1: Tạo biến môi trường
@@ -141,7 +138,7 @@ Ví dụ records:
 Tạo file `.env` ở root project:
 
 ```env
-VITE_API_BASE_URL=https://<project-id>.mockapi.io/api/v1
+VITE_API_BASE_URL=https://<project-id>.mockapi.io/yourname
 ```
 
 Lưu ý:
@@ -150,7 +147,6 @@ Lưu ý:
 - Sau khi sửa `.env`, cần restart dev server
 
 ---
-
 ## Bước 2: Viết API login giả lập
 
 ```ts
