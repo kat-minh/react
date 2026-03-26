@@ -343,7 +343,7 @@
 ### 🚨 Cảnh báo học thuật:
 - `authStore.ts` của **thinh** và **linh** gần như **copy y hệt nhau từng dòng** (cùng hàm `getStoredUser`, `getStoredAccessToken`, `saveSession`, `clearSession`, cùng `useAuth` wrapper function)
 - `EmployeesPage.tsx` của **thinh** và **linh** cũng **gần như giống nhau hoàn toàn**
-- Cần xác minh ai nộp trước và ai copy
+
 
 ---
 
