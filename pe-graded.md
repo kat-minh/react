@@ -261,7 +261,7 @@
 
 **Tổng: 2.2 / 6.0** 
 
-> ⚠️ **Bài có feature CRUD hoạt động nhưng hoàn toàn không dùng đúng stack theo đề. Người chấm gốc cho 0.6/1.5 Form dù bài không có RHF, Zod, React Query.**
+> ⚠️ **Bài có feature CRUD hoạt động nhưng hoàn toàn không dùng đúng stack theo đề.**
 
 > 🚨 **LƯU Ý QUAN TRỌNG:** `authStore.ts` và `EmployeesPage.tsx` của thinh **gần như copy y hệt** bài của linh. Cần xem xét vấn đề học thuật trung thực (academic integrity).
 
